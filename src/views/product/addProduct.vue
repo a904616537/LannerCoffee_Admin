@@ -126,7 +126,7 @@
 						:before-upload="handleBeforeUpload"
 						multiple
 						type="drag"
-						action="http://localhost:8082/upload"
+						action="http://106.14.94.210:8082/upload"
 						style="display: inline-block;width:58px;">
 							<div style="width: 58px;height:58px;line-height: 58px;">
 								<Icon type="camera" size="20"></Icon>
