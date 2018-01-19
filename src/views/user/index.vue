@@ -94,15 +94,15 @@
 				<Row class="margin-top-8">
 					<Col span="8">
 						<p class="notwrap">Star</p>
-						<p>{{showData.evaluate.star}}</p>
+						<p>{{showData.evaluate?showData.evaluate.star:0}}</p>
 					</Col>
 					<Col span="8">
 						<p class="notwrap">Star Total</p>
-						<p>{{showData.evaluate.total}}</p>
+						<p>{{showData.evaluate?showData.evaluate.total:0}}</p>
 					</Col>
 					<Col span="8">
 						<p class="notwrap">People Number</p>
-						<p>{{showData.evaluate.number}}</p>
+						<p>{{showData.evaluate?showData.evaluate.number:0}}</p>
 					</Col>
 				</Row>
     		</Card>
@@ -163,6 +163,9 @@
 			token : state => state.User.token,
         }),
 		methods : {
+			onRemove(data, next) {
+				next();
+			},
 			onChangeAdmin (status) {
 				const body = JSON.stringify({
 					_id   : this.showData._id,

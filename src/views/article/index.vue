@@ -1,11 +1,23 @@
 <style scoped>
+.avator-img {
+	display   : block;
+	width     : 80%;
+	max-width : 100px;
+	height    : auto;
+}
+.line-gray {
+    height: 0;
+    border-bottom: 2px solid #dcdcdc;
+}
+.margin-top-10 {
+    margin-top: 10px;
+}
 </style>
 <template>
     <div>
     	<Row>
     		<Col span="24">
     			<Card>
-    				<Button type="primary" icon="plus" @click="onCreate">Add Bean</Button>
     				<Button type="primary" icon="refresh" @click="getList" :loading="loading">Refresh</Button>
     			</Card>
     		</Col>
@@ -15,30 +27,30 @@
     			<v-Table :propsHistoryData="propsHistoryData" :propsColumn="propsColumn" :loading="loading" :btns="btns"/>
     		</Col>
     	</Row>
-    	<Modal title="Show Product" v-model="visible" width="850">
+    	<Modal title="Show User Info" v-model="visible" width="850">
     		<Card v-if="showData">
-    			<Row>
-    				<div class="demo-upload-list" style="width: 100px;height: 100px;line-height: 100px;" v-for="item in showData.img">
-						<template>
-							<img :src="item">
-						</template>
-					</div>
-    			</Row>
-				<Row>
-					<Col span="6"><p class="notwrap">商品名称:</p></Col>
-					<Col span="18" class="padding-left-8">{{showData.name}}</Col>
-				</Row>
-				<Row>
-					<Col span="6"><p class="notwrap">供应商:</p></Col>
-					<Col span="18" class="padding-left-8">{{showData.user.name}}</Col>
-				</Row>
-				<Row>
-					<Col span="6"><p class="notwrap">单价:</p></Col>
-					<Col span="18" class="padding-left-8">{{showData.price}}</Col>
-				</Row>
-				<Row v-for="(item, index) in showData.attribute" :key="index">
-					<Col span="6"><p class="notwrap">{{item.title}}:</p></Col>
-					<Col span="18" class="padding-left-8">{{item.content}}</Col>
+				<Row type="flex" class="user-infor">
+					<Col span="8" class="margin-top-10">
+						<Row class-name="made-child-con-middle" type="flex" align="middle">
+							<img class="avator-img" :src="showData.banner" />
+						</Row>
+					</Col>
+					<Col span="16" style="padding-left:6px;">
+						<Row class-name="made-child-con-middle" type="flex" align="middle">
+							<Col span="24">
+								<b class="card-user-infor-name">{{showData.title}}</b>
+								<p>User : {{showData.user.name}}</p>
+								<p>Phone : {{showData.user.phone}}</p>
+								<p>Email : {{showData.user.email}}</p>
+							</Col>
+						</Row>
+						<Row>
+							<div v-for="(item, index) in showData.content" :key="index">
+								<p v-if="item.type=='string'">{{item.value}}</p>
+								<p v-else><img class="avator-img" :src="item.value" /></p>
+							</div>
+						</Row>
+					</Col>
 				</Row>
     		</Card>
 		</Modal>
@@ -56,10 +68,9 @@
         },
         data () {
             return {
-				btns : [
+            	btns : [
 					{type : 'info', title : 'Show', onClick : (index) => {
 						this.showData = this.propsHistoryData[index].data;
-						console.log('this.propsHistoryData[index]', this.propsHistoryData[index])
 						this.visible = true;
 					}},
 					{type : 'error', title : 'Delete', onClick : (index) => {
@@ -72,19 +83,11 @@
 				visible     : false,
 				loading     : false,
 				propsColumn : [{
-					title    : '商品名称',
-					key      : 'name',
+					title    : 'Title',
+					key      : 'title',
 					sortable : true,
                 },{
-					title    : '价格',
-					key      : 'price',
-					sortable : true,
-                },{
-					title    : '种类',
-					key      : 'category',
-					sortable : true,
-                },{
-					title    : '供应商',
+					title    : '上传用户',
 					key      : 'user',
 					sortable : true,
                 },{
@@ -99,12 +102,6 @@
 			token : state => state.User.token,
         }),
 		methods : {
-			onRemove(data, next) {
-				next();
-			},
-			onCreate() {
-				this.$router.push({path : 'addProduct'})
-			},
 			onShow(index) {
 				this.showData = this.propsHistoryData[index];
 				this.visible = true;
@@ -112,10 +109,35 @@
 			moment(date) {
 				return moment(date).format('YYYY-MM-DD, h:mm:ss');
 			},
+			onRemove(data, next) {
+				const body = JSON.stringify({
+					_id : data._id
+                });
+				fetch(Vue.config.apiUrl + 'article?token=' + this.token, {
+					method :'delete',
+					headers : {
+						'Content-Type' : 'application/json',
+					},
+					body
+	        	})
+	        	.then(respone => respone.json())
+	        	.then(result => {
+	        		if(result.statusCode == 401) {
+	        			this.$Message.error({
+		        			content  : result.msg,
+							duration : 2,
+							closable : true
+						})
+	        		} else {
+	        			next();
+	        		}
+	        	})
+	        	.catch(err => console.log('err', err))
+			},
 			getList() {
 				this.loading = true;
 				setTimeout(() => {
-					fetch(Vue.config.apiUrl + 'product?token=' + this.token, {
+					fetch(Vue.config.apiUrl + 'article?token=' + this.token, {
 						method :'get',
 		        	})
 		        	.then(respone => respone.json())
@@ -131,12 +153,9 @@
 		        			result.data.map(val => {
 		        				this.propsHistoryData.push({
 									_id        : val._id,
-									name       : val.name,
-									price      : val.price,
-									category   : val.category,
+									title      : val.title,
 									user       : val.user.name,
-									user_id    : val.user._id,
-									CreateTime : this.moment(val.CreateTime),
+									CreateTime : this.moment(val.createTime),
 									data       : val
 		        				})
 		        				return val;

@@ -5,6 +5,8 @@ import Login      from './views/login'
 import Product    from './views/product/index'
 import AddProduct from './views/product/addProduct'
 import User       from './views/user/index'
+import Article    from './views/article/index'
+import Order    from './views/order/index'
 import Table      from './template/table'
 
 
@@ -20,9 +22,9 @@ const routes = [
 			hidden    : true,
 			path      : '/'
 		},{
-			title     : 'Users',
-			path      : '/table',
-			component : Table,
+			title     : 'Orders',
+			path      : '/order',
+			component : Order,
 			iconCls   : 'person'
 		},
 		// {
@@ -57,11 +59,22 @@ const routes = [
 		path      : '/user',
 		title     : 'User',
 		component : Index,
-		iconCls   : 'person-stalker',//图标样式class
+		iconCls   : 'person-stalker',	//图标样式class
 		children  : [{
 			title     : 'User List',
 			path      : '/user',
 			component : User,
+			iconCls   : 'person'
+		}]
+	},{
+		path      : '/article',
+		title     : 'Article',
+		component : Index,
+		iconCls   : 'person-stalker',	//图标样式class
+		children  : [{
+			title     : 'Article List',
+			path      : '/article',
+			component : Article,
 			iconCls   : 'person'
 		}]
 	},{

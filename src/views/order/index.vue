@@ -5,7 +5,6 @@
     	<Row>
     		<Col span="24">
     			<Card>
-    				<Button type="primary" icon="plus" @click="onCreate">Add Bean</Button>
     				<Button type="primary" icon="refresh" @click="getList" :loading="loading">Refresh</Button>
     			</Card>
     		</Col>
@@ -18,27 +17,43 @@
     	<Modal title="Show Product" v-model="visible" width="850">
     		<Card v-if="showData">
     			<Row>
-    				<div class="demo-upload-list" style="width: 100px;height: 100px;line-height: 100px;" v-for="item in showData.img">
+    				<div v-for="item in showData.order_item">
 						<template>
-							<img :src="item">
+							<Row>
+								<Col span="6"><img style="width : 100px;" :src="item.product?item.product.img[0]:''"></Col>
+								<Col span="18" class="padding-left-8">
+									<b class="card-user-infor-name">{{item.product.name}}</b>
+									<p>Price : {{item.price}}</p>
+									<p>Number : {{item.number}}</p>
+									<p>Subtotal : {{item.total}}</p>
+								</Col>
+							</Row>
 						</template>
 					</div>
     			</Row>
 				<Row>
-					<Col span="6"><p class="notwrap">商品名称:</p></Col>
-					<Col span="18" class="padding-left-8">{{showData.name}}</Col>
+					<Col span="6"><p class="notwrap">订单号:</p></Col>
+					<Col span="18" class="padding-left-8">{{showData._id}}</Col>
 				</Row>
 				<Row>
-					<Col span="6"><p class="notwrap">供应商:</p></Col>
+					<Col span="6"><p class="notwrap">下单用户:</p></Col>
 					<Col span="18" class="padding-left-8">{{showData.user.name}}</Col>
 				</Row>
 				<Row>
-					<Col span="6"><p class="notwrap">单价:</p></Col>
-					<Col span="18" class="padding-left-8">{{showData.price}}</Col>
+					<Col span="6"><p class="notwrap">供应商:</p></Col>
+					<Col span="18" class="padding-left-8">{{showData.supplier.name}}</Col>
 				</Row>
-				<Row v-for="(item, index) in showData.attribute" :key="index">
-					<Col span="6"><p class="notwrap">{{item.title}}:</p></Col>
-					<Col span="18" class="padding-left-8">{{item.content}}</Col>
+				<Row>
+					<Col span="6"><p class="notwrap">总价:</p></Col>
+					<Col span="18" class="padding-left-8">{{showData.total}}</Col>
+				</Row>
+				<Row>
+					<Col span="6"><p class="notwrap">下单时间:</p></Col>
+					<Col span="18" class="padding-left-8">{{moment(showData.createTime)}}</Col>
+				</Row>
+				<Row>
+					<Col span="6"><p class="notwrap">订单状态:</p></Col>
+					<Col span="18" class="padding-left-8">{{showData.status}}</Col>
 				</Row>
     		</Card>
 		</Modal>
@@ -72,23 +87,27 @@
 				visible     : false,
 				loading     : false,
 				propsColumn : [{
-					title    : '商品名称',
-					key      : 'name',
+					title    : '订单号',
+					key      : '_id',
 					sortable : true,
                 },{
-					title    : '价格',
-					key      : 'price',
-					sortable : true,
-                },{
-					title    : '种类',
-					key      : 'category',
-					sortable : true,
-                },{
-					title    : '供应商',
+					title    : '用户',
 					key      : 'user',
 					sortable : true,
                 },{
-					title    : '上传时间',
+					title    : '供应商',
+					key      : 'supplier',
+					sortable : true,
+                },{
+					title    : 'Total',
+					key      : 'total',
+					sortable : true,
+                },{
+					title    : '状态',
+					key      : 'status',
+					sortable : true,
+                },{
+					title    : '下单时间',
 					key      : 'CreateTime',
 					sortable : true,
                 }],
@@ -102,9 +121,6 @@
 			onRemove(data, next) {
 				next();
 			},
-			onCreate() {
-				this.$router.push({path : 'addProduct'})
-			},
 			onShow(index) {
 				this.showData = this.propsHistoryData[index];
 				this.visible = true;
@@ -115,7 +131,7 @@
 			getList() {
 				this.loading = true;
 				setTimeout(() => {
-					fetch(Vue.config.apiUrl + 'product?token=' + this.token, {
+					fetch(Vue.config.apiUrl + 'order?token=' + this.token, {
 						method :'get',
 		        	})
 		        	.then(respone => respone.json())
@@ -131,12 +147,11 @@
 		        			result.data.map(val => {
 		        				this.propsHistoryData.push({
 									_id        : val._id,
-									name       : val.name,
-									price      : val.price,
-									category   : val.category,
 									user       : val.user.name,
-									user_id    : val.user._id,
-									CreateTime : this.moment(val.CreateTime),
+									supplier : val.supplier.name,
+									total      : val.total,
+									status     : val.status,
+									CreateTime : this.moment(val.createTime),
 									data       : val
 		        				})
 		        				return val;
