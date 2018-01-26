@@ -68,21 +68,27 @@
 						</FormItem>
 
 						<FormItem label="Roast：">
+                            <Input :disabled="hasSubmit" v-model="roast_title" type="text" placeholder="dark"/>
 							<Input :disabled="hasSubmit" v-model="roast" type="textarea" :autosize="{minRows: 2,maxRows: 5}"/>
 						</FormItem>
 						<FormItem label="Body：">
+                            <Input :disabled="hasSubmit" v-model="body_title" type="text" placeholder="dark"/>
 							<Input :disabled="hasSubmit" v-model="body" type="textarea" :autosize="{minRows: 2,maxRows: 5}" />
 						</FormItem>
 						<FormItem label="Flavors：">
+                            <Input :disabled="hasSubmit" v-model="flavors_title" type="text" placeholder="dark"/>
 							<Input :disabled="hasSubmit" v-model="flavors" type="textarea" :autosize="{minRows: 2,maxRows: 5}" />
 						</FormItem>
 						<FormItem label="Aromas：">
+                            <Input :disabled="hasSubmit" v-model="aromas_title" type="text" placeholder="dark"/>
 							<Input :disabled="hasSubmit" v-model="aromas" type="textarea" :autosize="{minRows: 2,maxRows: 5}" />
 						</FormItem>
 						<FormItem label="Detail：">
+                            <Input :disabled="hasSubmit" v-model="detail_title" type="text" placeholder="dark"/>
 							<Input :disabled="hasSubmit" v-model="detail" type="textarea" :autosize="{minRows: 2,maxRows: 5}" placeholder="请输入详细信息" />
 						</FormItem>
 						<FormItem label="More：">
+                            <Input :disabled="hasSubmit" v-model="detail_more_title" type="text" placeholder="dark"/>
 							<Input :disabled="hasSubmit" v-model="detail_more" type="textarea" :autosize="{minRows: 2,maxRows: 5}" placeholder="请输入更多描述" />
 						</FormItem>
 						<FormItem label="Content：">
@@ -169,14 +175,20 @@ export default {
 	name : 'artical-publish',
     data () {
         return {
-			name        : '',
-			price       : 0,
-			roast       : '',
-			body        : '',
-			flavors     : '',
-			aromas      : '',
-			detail      : '',
-			detail_more : '',
+            name             : '',
+            price            : 0,
+            roast            : '',
+            roast_title      : '',
+            body             : '',
+            body_title       : '',
+            flavors          : '',
+            flavors_title    : '',
+            aromas           : '',
+            aromas_title     : '',
+            detail           : '',
+            detail_title     : '',
+            detail_more      : '',
+            detail_more_title : '',
 			order       : 20,
 
 			defaultList: [],
@@ -298,11 +310,17 @@ export default {
 					price       : this.price,
 					order       : this.order,
 					roast       : this.roast,
+                    roast       : this.roast_title,
 					body        : this.body,
+                    body        : this.body_title,
 					flavors     : this.flavors,
+                    flavors     : this.flavors_title,
 					aromas      : this.aromas,
+                    aromas      : this.aromas_title,
 					detail      : this.detail,
+                    detail      : this.detail_title,
 					detail_more : this.detail_more,
+                    detail_more : this.detail_more_title
                 });
 
                 fetch(Vue.config.apiUrl + 'product?token=' + this.token, {

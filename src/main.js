@@ -14,6 +14,7 @@ Vue.use(Vuex);
 Vue.use(iView);
 
 Vue.config.apiUrl = "http://106.14.94.210:8050/";
+// Vue.config.apiUrl = "http://localhost:8050/";
 
 
 
