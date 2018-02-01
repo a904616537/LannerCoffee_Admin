@@ -55,6 +55,15 @@
 					<Col span="6"><p class="notwrap">订单状态:</p></Col>
 					<Col span="18" class="padding-left-8">{{showData.status}}</Col>
 				</Row>
+				<Row>
+					<Col span="6"><p class="notwrap">送货信息:</p></Col>
+					<Col span="18" class="padding-left-8">
+						<b class="card-user-infor-name">Recipients : {{showData.address.recipients}}</b>
+						<p>Phone : {{showData.address.phone}}</p>
+						<p>Email : {{showData.address.email}}</p>
+						<p>Address : {{showData.address.address}}</p>
+					</Col>
+				</Row>
     		</Card>
 		</Modal>
     </div>
