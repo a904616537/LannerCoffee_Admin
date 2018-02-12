@@ -310,17 +310,17 @@ export default {
 					price       : this.price,
 					order       : this.order,
 					roast       : this.roast,
-                    roast       : this.roast_title,
+                    roast_title       : this.roast_title,
 					body        : this.body,
-                    body        : this.body_title,
+                    body_title        : this.body_title,
 					flavors     : this.flavors,
-                    flavors     : this.flavors_title,
+                    flavors_title     : this.flavors_title,
 					aromas      : this.aromas,
-                    aromas      : this.aromas_title,
+                    aromas_title      : this.aromas_title,
 					detail      : this.detail,
-                    detail      : this.detail_title,
+                    detail_title      : this.detail_title,
 					detail_more : this.detail_more,
-                    detail_more : this.detail_more_title
+                    detail_more_title : this.detail_more_title
                 });
 
                 fetch(Vue.config.apiUrl + 'product?token=' + this.token, {

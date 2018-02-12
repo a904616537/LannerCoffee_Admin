@@ -62,11 +62,11 @@
 						console.log('this.propsHistoryData[index]', this.propsHistoryData[index])
 						this.visible = true;
 					}},
-					{type : 'error', title : 'Delete', onClick : (index) => {
-						this.onRemove(this.propsHistoryData[index], () => {
-							this.propsHistoryData.splice(index, 1);
-						})
-					}}
+					// {type : 'error', title : 'Delete', onClick : (index) => {
+					// 	this.onRemove(this.propsHistoryData[index], () => {
+					// 		this.propsHistoryData.splice(index, 1);
+					// 	})
+					// }}
 				],
 				showData    : null,
 				visible     : false,
