@@ -27,6 +27,9 @@
     			<v-Table :propsHistoryData="propsHistoryData" :propsColumn="propsColumn" :loading="loading" :btns="btns"/>
     		</Col>
     	</Row>
+    	<Modal title="Upload User Banner" v-model="upload_visible" width="850">
+    		<v-upload-banner ref="uploadbanner" :user="showData"/>
+    	</Modal>
     	<Modal title="Show User Info" v-model="visible" width="850">
     		<Card v-if="showData">
     			<Row>
@@ -114,10 +117,12 @@
 	import {mapState, mapActions} from 'vuex';
 	import moment                 from 'moment';
 	import VTable                 from '../../template/table';
+	import VUploadBanner          from './update_banner';
 
     export default {
         components: { 
-            VTable
+            VTable,
+            VUploadBanner
         },
         data () {
             return {
@@ -126,16 +131,17 @@
 						this.showData = this.propsHistoryData[index].data;
 						this.visible = true;
 					}},
-					{type : 'error', title : 'Delete', onClick : (index) => {
-						this.onRemove(this.propsHistoryData[index], () => {
-							this.propsHistoryData.splice(index, 1);
-						})
+					{type : 'ghost', title : 'Upload', onClick : (index) => {
+						this.upload_visible = true;
+						this.showData = this.propsHistoryData[index].data;
+						// this.$refs.uploadbanner.onRefresh(this.showData.img || [])
 					}}
 				],
-				showData    : null,
-				visible     : false,
-				loading     : false,
-				propsColumn : [{
+				showData       : null,
+				visible        : false,
+				upload_visible : false,
+				loading        : false,
+				propsColumn    : [{
 					title    : '名字',
 					key      : 'name',
 					sortable : true,
@@ -168,7 +174,7 @@
 			},
 			onChangeAdmin (status) {
 				const body = JSON.stringify({
-					_id   : this.showData._id,
+					_id   : this.props._id,
 					key   : 'is_admin',
 					value : status
                 });

@@ -46,6 +46,12 @@
     .menuicon {
         padding: 0 15px;
     }
+    .logout {
+        height        : 60px;
+        line-height   : 60px;
+        padding-right : 20px;
+        text-align    : right;
+    }
 </style>
 <template>
     <div class="layout">
@@ -67,7 +73,9 @@
                 </Menu>
             </Col>
             <Col span="19">
-                <div class="layout-header"></div>
+                <div class="layout-header">
+                    <div @click="onLogout" class="logout"><p>Logout</p></div>
+                </div>
                 <div class="layout-breadcrumb">
                     <Breadcrumb>
                         <BreadcrumbItem href="#">Home</BreadcrumbItem>
@@ -86,15 +94,22 @@
     </div>
 </template>
 <script>
+    import {mapState, mapActions} from 'vuex';
     export default {
         data() {
         	return {
-
         	}
         },
         methods: {
+            ...mapActions([
+                'Logout'
+            ]),
             onSelect(name) {
                 // this.$router.push(val.path)
+            },
+            onLogout() {
+                this.Logout()
+                window.location.reload();
             }
         }
     }

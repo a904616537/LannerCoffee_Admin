@@ -17,7 +17,6 @@
 <script>
 	import Vue         from 'vue';
 	import {mapState, mapActions} from 'vuex';
-	import Cookie      from 'vue-cookie';
 	import querystring from 'querystring';
 	export default{
 		data() {
@@ -60,8 +59,7 @@
 							})	
 	        			} else {
 	        				this.Login(result.data)
-		        			Cookie.set('user-token', result.data.token, { expires: '1h' })
-							Cookie.set('user', JSON.stringify(result.data.user), { expires: '1h' })
+		        			
 		        			this.$Message.info({
 			        			content  : result.msg,
 								duration : 0.5,

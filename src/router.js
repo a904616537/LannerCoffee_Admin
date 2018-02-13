@@ -6,7 +6,7 @@ import Product    from './views/product/index'
 import AddProduct from './views/product/addProduct'
 import User       from './views/user/index'
 import Article    from './views/article/index'
-import Order    from './views/order/index'
+import Order      from './views/order/index'
 import Table      from './template/table'
 
 
