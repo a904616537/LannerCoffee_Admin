@@ -103,8 +103,8 @@
 			onRemove(data, next) {
 				this.loading = true;
 				setTimeout(() => {
-					fetch(Vue.config.apiUrl + 'product?token=' + this.token, {
-						method :'get',
+					fetch(Vue.config.apiUrl + 'product?token=' + this.token + '&_id=' + data._id, {
+						method :'delete',
 		        	})
 		        	.then(respone => respone.json())
 		        	.then(result => {
