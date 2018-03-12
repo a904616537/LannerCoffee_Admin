@@ -62,11 +62,11 @@
 						console.log('this.propsHistoryData[index]', this.propsHistoryData[index])
 						this.visible = true;
 					}},
-					// {type : 'error', title : 'Delete', onClick : (index) => {
-					// 	this.onRemove(this.propsHistoryData[index], () => {
-					// 		this.propsHistoryData.splice(index, 1);
-					// 	})
-					// }}
+					{type : 'error', title : 'Delete', onClick : (index) => {
+						this.onRemove(this.propsHistoryData[index], () => {
+							this.propsHistoryData.splice(index, 1);
+						})
+					}}
 				],
 				showData    : null,
 				visible     : false,
@@ -99,8 +99,20 @@
 			token : state => state.User.token,
         }),
 		methods : {
+			// 删除产品
 			onRemove(data, next) {
-				next();
+				this.loading = true;
+				setTimeout(() => {
+					fetch(Vue.config.apiUrl + 'product?token=' + this.token, {
+						method :'get',
+		        	})
+		        	.then(respone => respone.json())
+		        	.then(result => {
+						next();
+		        	})
+		        	.catch(err => console.log('err', err))
+		        	this.loading = false;
+				}, 1000);
 			},
 			onCreate() {
 				this.$router.push({path : 'addProduct'})
